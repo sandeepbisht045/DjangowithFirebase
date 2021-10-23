@@ -6,4 +6,5 @@ https://www.firebasewithpython.pythonanywhere.com/index
 
 Requirements for the project:
 Django -install using command- pip install django
-pyrebase4 : to interact with Firebase Database - install by using command- pip install pyrebase4
+pyrebase4 : to interact with Firebase Database 
+install by using command- pip install pyrebase4
