@@ -1,0 +1,186 @@
+{% extends "common.html" %}
+{%block title%}Profile{%endblock%}
+{%block body%}
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-10 mt-5 pt-5">
+            <div class="row z-depth-3">
+                <div class="col-sm-4 bg-info rounded-left">
+
+
+                    <div class="card-block text-center text-white">
+                        <br>
+                        
+                        <div id="select" style="width: 150px; height: 150px; margin: auto;">
+                            <img src="{{link}}" id="myimage" alt="" class="card-img-top" width="100%" height="100%">
+                        </div>
+                        <br>
+                        <button type="button" id="upload" class="btn btn-danger"
+                            style="display: none; margin: auto;">Upload</button>
+
+
+                        <!-- </i>  -->
+
+
+                        <h2 class="font-weight-bold mt-4">{{username|title}}</h2>
+                        <p>{{email}}</p>
+                    </div>
+                </div>
+
+                <div class="col-sm-8  bg-white rounded-right">
+
+                    <h3 class="mt-3 text-center">User Profile</h3>
+                    <hr class="bg-primary mt-0 w-25">
+                    <!-- -------------------------------------------------------------------------------    -->
+                    <form action="/profile" method="post" style="display: none;" id="save_form">
+                        {%csrf_token%}
+                        <!-- <p class="font-weight-bold m-4 text-center">Date of Birth:</p> -->
+                        <div class="text-center mb-4">
+                            <b>Date of Birth :</b> <input required type="date" id="dob" name="dob"
+                                value="{{data_fetch.1}}">
+                        </div>
+
+                        <!-- <p class="font-weight-bold m-4">Address</p> -->
+                        <div class="text-center m-4"><b>Address:</b> <input maxlength="150" required type="text"
+                                id="address" name="address" value="{{data_fetch.0}}"> </div>
+                        <div class="text-center">
+
+                            <input type="submit" value="Save" class="btn btn-primary" id="save_details"
+                                onclick="save_data()">
+                        </div>
+                    </form>
+                    <!-- ---------------------------------------------------------------------------------- -->
+
+                    <div id="show_profile" style="display: block;">
+                        <div class="col-sm-6 m-4">
+                            <p class="font-weight-bold"><b>Date of Birth</b></p>
+                            <h6 class=" text-muted">{{data_fetch.1}}</h6>
+                        </div>
+                        <div class="col-sm-6 m-4">
+                            <p class="font-weight-bold"><b>Address</b></p>
+
+
+                            <h6 style="overflow-wrap: break-word;" class="text-muted">{{data_fetch.0}}
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="container ">
+    <div class="row">
+        <div class="col-sm-6"></div>
+        <div class="col-sm-6 mt-4">
+            <input type="submit" value="Update Details" id="update" onclick="update()" class="btn btn-primary"
+                style="display: block;"> <br>
+            <b> <label for="" id="upProgress" style="color: green;"></label> </b>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="hidden" value="{{data_fetch.1}}">
+<input type="text" id="namebox" style="display: none;">
+<img src="" id="myimage" alt="">
+
+<form action="/upload_image" method="post" style="display: none;">
+    {%csrf_token%}
+    <input type="hidden" id="url" name="url">
+    <input type="submit" id="postlink">
+</form>
+
+<!-- -------------------------------------------------javascript------------------------------------------------------------- -->
+<script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-storage.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-database.js"></script>
+
+
+<script>
+    function update() {
+        var update = document.getElementById("update");
+        var show_profile = document.getElementById("show_profile");
+        var save_form = document.getElementById("save_form");
+        update.style.display = "none";
+        show_profile.style.display = "none";
+        save_form.style.display = "block";
+    }
+    var hidden_field = document.getElementById("hidden").value;
+    console.log(hidden_field)
+    if (hidden != "") {
+        show_profile.style.display = "block";
+        save_form.style.display = "none";
+        // update.style.display="block";
+
+
+    }
+    // ----------------------------------------------------------
+    var ImgName, ImgUrl;
+    var files = [];
+    var reader
+    var config = {
+        apiKey: "AIzaSyAWjpw4KAAOmQTPfVAYetM0PLm02cPTWCE",
+        authDomain: "krishworks-104a4.firebaseapp.com",
+        databaseURL: "https://krishworks-104a4-default-rtdb.firebaseio.com",
+        projectId: "krishworks-104a4",
+        storageBucket: "krishworks-104a4.appspot.com",
+        messagingSenderId: "128730564978",
+        appId: "1:128730564978:web:99eefdd8bed26fb22335eb",
+        measurementId: "G-V0XHCQ2GV6"
+    };
+    firebase.initializeApp(config);
+
+    document.getElementById("select").onclick = function () {
+        var input = document.createElement("input");
+        input.type = "file";
+        input.onchange = e => {
+            files = e.target.files;
+            reader = new FileReader();
+
+            reader.onload = function () {
+                // document.getElementById("myimage").src=reader.result;
+            }
+            reader.readAsDataURL(files[0]);
+        }
+        input.click();
+        setTimeout(function () { document.getElementById("upload").style.display = "block"; }, 2000)
+
+
+    }
+    // --------------------Upload logic
+    document.getElementById("upload").onclick = function () {
+        ImgName = document.getElementById("namebox").value;
+        const filename = Math.floor(Date.now() / 1000);
+        var uploadTask = firebase.storage().ref("Images/" + ImgName + filename + ".png").put(files[0]);
+        uploadTask.on("state_changed", function (snapshot) {
+            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            document.getElementById("upProgress").innerHTML = "Upload" + " " + progress + "%";
+            if (progress == 100) {
+                document.getElementById("upload").style.display = "none";
+            }
+        },
+            function (error) {
+                alert("error")
+            },
+            function () {
+                uploadTask.snapshot.ref.getDownloadURL().then(function (url) {
+                    ImgUrl = url;
+                    document.getElementById("url").value = ImgUrl;
+
+                    document.getElementById("postlink").click();
+                    // console.log("link",ImgUrl)
+
+                    firebase.database().ref("Pictures/" + ImgName).set({
+                        Name: ImgName,
+                        Link: ImgUrl
+                    })
+                }
+                )
+            });
+    }
+
+</script>
+
+{%endblock%}
