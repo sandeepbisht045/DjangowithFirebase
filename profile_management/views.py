@@ -1,11 +1,11 @@
 from django.shortcuts import render,redirect
 import pyrebase,time
 
-# setting up firebase database to establish connection
-config={"apiKey": "AIzaSyAWjpw4KAAOmQTPfVAYetM0PLm02cPTWCE"
-        ,"authDomain": "krishworks-104a4.firebaseapp.com","projectId": "krishworks-104a4","storageBucket": "krishworks-104a4.appspot.com"
-        ,"messagingSenderId": "128730564978","appId": "1:128730564978:web:99eefdd8bed26fb22335eb","measurementId": "G-V0XHCQ2GV6"
-        ,"databaseURL": "https://krishworks-104a4-default-rtdb.firebaseio.com"
+# setting up firebase database to establish connection use your details I have hided all details
+config={"apiKey": "**********************"
+        ,"authDomain": "**********************","projectId": "**********************","storageBucket": "**********************"
+        ,"messagingSenderId": "**********************","appId": "1:*******:web:99eefdd8bed26fb22335eb","measurementId": "G-V0XHCQ2GV6"
+        ,"databaseURL": "**********************"
 }
 firebase=pyrebase.initialize_app(config)
 database=firebase.database()
