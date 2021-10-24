@@ -119,7 +119,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-SESSION_COOKIE_AGE=30
+SESSION_COOKIE_AGE=3000
 STATICFILES_DIRS = [
     BASE_DIR / "static",
     

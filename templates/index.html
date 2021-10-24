@@ -1,8 +1,4 @@
 {% extends "common.html" %}
-<!-- Button trigger modal -->{% block signup%}
-{% endblock %}
-
-<!-- <a class="nav-link active" aria-current="page" href="#">Signnup</a> -->
 
 {%block body%}
 <a class="nav-link active" data-bs-toggle="modal" data-bs-target="#exampleModal" id="btn" style="cursor: pointer;">
@@ -25,7 +21,7 @@
           {%csrf_token%}
           <div class="form-group">
             <label for="username">Username</label>
-            <input type="text" id="username" name="username" class="form-control" value="{{username}}">
+            <input type="text" id="username" required minlength="4" name="username" class="form-control" value="{{username}}">
           </div>
           <div class="form-group">
             <label for="email">Email</label>
@@ -33,7 +29,7 @@
           </div>
           <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password1" name="password" class="form-control" value="">
+            <input type="password" minlength="6" id="password1" name="password" class="form-control" value="">
           </div>
           <div class="modal-footer justify-content-center">
             <input type="submit" value="Signup" class="btn btn-primary">
@@ -49,7 +45,7 @@
         {%csrf_token%}
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email2" name="email" class="form-control" value="{{email}}">
+          <input type="email" required id="email2" name="email" class="form-control" value="{{email}}">
         </div>
         <div class="form-group">
           <label for="password">Password</label>
@@ -88,73 +84,7 @@
 
 <div id="{{check_email}}"></div>
 
+{% load static %}
+<script src="{% static 'js/index.js' %}"></script>   
 
-<!-- -------------Javascript ----- -->
-<script>
-  setTimeout(function () {
-    document.getElementById("btn").click();
-  }, 300);
-
-  function logindisplay() {
-    var loginmodal = document.getElementById("loginmodal")
-    loginmodal.style.display = "block";
-    var signupmodal = document.getElementById("signupmodal")
-    signupmodal.style.display = "none";
-    document.getElementById("signup").classList.remove("btn-danger");
-    document.getElementById("login").classList.add("btn-danger");
-
-  }
-  function signupdisplay() {
-    document.getElementById("signupmodal").style.display = "block";
-    document.getElementById("loginmodal").style.display = "none";
-    document.getElementById("signup").classList.add("btn-danger");
-    document.getElementById("login").classList.remove("btn-danger");
-  }
-  function Reset_link() {
-    var reset_link = document.getElementById("reset_link")
-    reset_link.style.display = "block";
-    loginmodal.style.display = "none";
-    signupmodal.style.display = "none";
-    document.getElementById("header").innerHTML = "Enter Registered Email for Reset link"
-  }
-  var email2 = document.getElementById("email2");
-  if (email2.value != "") {
-    loginmodal.style.display = "block";
-    signupmodal.style.display = "none";
-    reset_link.style.display = "none";
-    document.getElementById("signup").classList.remove("btn-danger");
-    document.getElementById("login").classList.add("btn-danger");
-  }
-
-  var email1 = document.getElementById("email1");
-  if (email1.value != "") {
-    loginmodal.style.display = "none";
-    signupmodal.style.display = "block";
-    reset_link.style.display = "none";
-    document.getElementById("signup").classList.add("btn-danger");
-    document.getElementById("login").classList.remove("btn-danger");
-  }
-
-
-  setTimeout(function () {
-    document.getElementById("invalid_credentials").style.display = "none";
-  }, 4000)
-
-  var email3 = document.getElementById("email3").value;
-  var reset_link = document.getElementById("reset_link");
-  if (email3 != "") {
-    loginmodal.style.display = "none";
-    signupmodal.style.display = "none";
-    reset_link.style.display = "block";
-    document.getElementById("header").innerHTML = "Enter Registered Email for Reset link"
-    setTimeout(function () {
-      document.getElementById("alert_for_reset_password").style.display = "none";
-    }, 4000)
-  }
-
-  var check_email = document.getElementById("check_email");
-  if (check_email) {
-    alert("Check your email to Reset your Password & come back to Login again")
-  }
-</script>
 {%endblock%}

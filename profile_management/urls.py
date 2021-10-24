@@ -19,19 +19,12 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("index",views.index,name="index"),
-    path("login",views.login,name="login"),
-    path("signup",views.signup,name="signup"),
-    path("logout",views.logout,name="logout"),
-    path("profile",views.profile,name="profile"),
-    path("upload_image",views.upload_image,name="upload_image"),
-    path("reset_password",views.reset_password,name="reset_password"),
-    path("flush",views.flush,name="flush"),
-    
-    
-    
-    
-    
-    
-    
+    path("index", views.index, name="index"),
+    path("login", views.login, name="login"),
+    path("signup", views.signup, name="signup"),
+    path("logout", views.logout, name="logout"),
+    path("profile", views.profile, name="profile"),
+    path("upload_image", views.upload_image, name="upload_image"),
+    path("reset_password", views.reset_password, name="reset_password"),
+
 ]
