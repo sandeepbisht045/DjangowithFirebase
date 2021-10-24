@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from django.shortcuts import render, redirect
 import pyrebase
 import time
@@ -12,6 +13,20 @@ auth = firebase.auth()
 # normal function
 
 
+=======
+from django.shortcuts import render,redirect
+import pyrebase,time
+
+# setting up firebase database to establish connection use your details I have hided all details
+config={"apiKey": "**********************"
+        ,"authDomain": "**********************","projectId": "**********************","storageBucket": "**********************"
+        ,"messagingSenderId": "**********************","appId": "1:*******:web:99eefdd8bed26fb22335eb","measurementId": "G-V0XHCQ2GV6"
+        ,"databaseURL": "**********************"
+}
+firebase=pyrebase.initialize_app(config)
+database=firebase.database()
+auth=firebase.auth()
+>>>>>>> 4f9d85724071c217f1c94bba304c810d9bccdf9c
 def retrieve_image_link(l_id):
     link_fetch = database.child("images").child(l_id).get().val()
     return link_fetch["image_link"]
